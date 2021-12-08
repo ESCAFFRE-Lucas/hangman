@@ -8,6 +8,7 @@ import (
 )
 
 func HangmanManager() {
+	draw := hangman.GetDrawFromFile()
 	var rightLetters []string
 	var wrongLetters []string
 	const maxAttempts = 10
@@ -18,7 +19,7 @@ func HangmanManager() {
 	for currentWord != targetWord && len(wrongLetters) < maxAttempts {
 		userInput := hangman.Input()
 		hangman.HandleInput(targetWord, userInput, &currentWord, &rightLetters, &wrongLetters)
-		hangman.PrintGame(userInput, currentWord, rightLetters, wrongLetters, maxAttempts)
+		hangman.PrintGame(userInput, currentWord, rightLetters, wrongLetters, draw, maxAttempts)
 	}
 }
 
