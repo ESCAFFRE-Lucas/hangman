@@ -8,6 +8,8 @@ import (
 )
 
 func HangmanManager() {
+	//var rightLetter []string
+	//var wrongLetter []string
 	targetWord := hangman.GetRandomWord()
 	currentWord := hangman.InitWord(targetWord)
 	fmt.Println(targetWord)
@@ -16,5 +18,6 @@ func HangmanManager() {
 
 func main() {
 	rand.Seed(time.Now().Unix())
-	HangmanManager()
+	//HangmanManager()
+	hangman.Input()
 }
