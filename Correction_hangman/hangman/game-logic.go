@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func Input() string {
@@ -14,8 +15,30 @@ func Input() string {
 			fmt.Println("Bâtard mets qu'une seule lettre je t'ai dit ! Tu sais pas lire ?!")
 			continue
 		}
-		fmt.Println(scanner.Text())
 		break
 	}
 	return scanner.Text()
+}
+
+func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string) {
+	//1er partie cherchez si la letter est dans le mot ou non
+	res := strings.Index(word, letter)
+	fmt.Println(res)
+	//2eme partie Si oui, la mettre dans le mot à l'index prévu. Si non, ne rien faire.
+	if res != -1 {
+		arr := []rune(*hiddenWord)
+		for i := 0; i < len(word); i++ {
+			if word[i] == letter[0] {
+				arr[i] = rune(letter[0])
+			}
+		}
+		*hiddenWord = string(arr)
+		if !contains(*right, letter) {
+			*right = append(*right, letter)
+		}
+	} else {
+		if !contains(*wrong, letter) {
+			*wrong = append(*wrong, letter)
+		}
+	}
 }
