@@ -17,8 +17,19 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 	_ = tmpl.Execute(w, struct {
 		Title string
 		Data  []string
-	}{Title: "ok", Data: []string{classic.GetRandomWord(), classic.Input(), " ", "p", "d"}},
+	}{Title: "ok", Data: []string{classic.GetRandomWord(), "yo", " ", "p", "d"}},
 	)
+
+	switch r.Method {
+	case "POST":
+		if err := r.ParseForm(); err != nil {
+			fmt.Fprintf(w, "ParseForm() err : %v", err)
+			return
+		}
+		fmt.Fprintf(w, "Post from website r.postfrom = %v\n", r.PostForm)
+		letter := r.FormValue("letter")
+		fmt.Fprintf(w, "Letter = %s\n", letter)
+	}
 }
 
 func main() {
