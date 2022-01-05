@@ -10,16 +10,13 @@
         <header>
             <h1>Hangman Web</h1>
         </header>
-        <form method="POST" action="/gohtml">
+        {{ $value := .Data}}
+        <p>{{$value}} </p>
+        <form method="POST" action="/hangman">
             <label>Letter <input name="letter" type="text" value=""/> </label>
-            <input type="submit" value="submit"/>
+            <button type="submit"> Confirm </button>
         </form>
-
     </div>
-
-{{range $key, $value := .Data}}
-    <p>{{$key}} -- {{$value}} </p>
-{{end}}
 
 </body>
 </html>
