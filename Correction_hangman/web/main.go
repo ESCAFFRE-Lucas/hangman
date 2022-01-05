@@ -26,7 +26,6 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "ParseForm() err : %v", err)
 			return
 		}
-		fmt.Fprintf(w, "Post from website r.postfrom = %v\n", r.PostForm)
 		letter := r.FormValue("letter")
 		fmt.Fprintf(w, "Letter = %s\n", letter)
 	}
