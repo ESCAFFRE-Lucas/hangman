@@ -17,7 +17,7 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 	_ = tmpl.Execute(w, struct {
 		Title string
 		Data  []string
-	}{Title: "ok", Data: []string{classic.GetRandomWord(), "k", " ", "p", "d"}},
+	}{Title: "ok", Data: []string{classic.GetRandomWord(), classic.Input(), " ", "p", "d"}},
 	)
 }
 
