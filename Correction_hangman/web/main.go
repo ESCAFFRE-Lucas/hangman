@@ -30,6 +30,6 @@ func main() {
 
 	server.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	// listen to the port 8000
-	fmt.Println("server listening on http://localhost:8000/%22")
+	fmt.Println("server listening on http://localhost:8000/gohtml")
 	http.ListenAndServe(":8000", server)
 }
