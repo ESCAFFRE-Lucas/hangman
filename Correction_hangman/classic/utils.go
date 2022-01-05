@@ -1,4 +1,4 @@
-package hangman
+package classic
 
 func contains(arr []string, str string) bool {
 	for _, val := range arr {

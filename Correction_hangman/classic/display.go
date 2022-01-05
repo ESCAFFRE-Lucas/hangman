@@ -1,4 +1,4 @@
-package hangman
+package classic
 
 import (
 	"fmt"
@@ -6,19 +6,20 @@ import (
 	"strings"
 )
 
-func PrintGame(input, word string, right, wrong, draw []string, attempts int) {
-	fmt.Println(input)
-	fmt.Println(word)
-	fmt.Println(right, wrong)
-	fmt.Println(draw[len(wrong)-1])
+func PrintGame(word string, right, wrong, draw []string, attempts int) {
+	fmt.Println("Right letters :", right, "\n", "Wrong letters :", wrong)
+	fmt.Println(draw[len(wrong)])
 	fmt.Println("Nombre d'essais restants : ", attempts-len(wrong))
+	fmt.Println(word)
 	if attempts-len(wrong) == 0 {
 		fmt.Println("Arrivederci")
+	} else if len(right) == len(word) {
+		fmt.Println("Good Job !!")
 	}
 }
 
 func GetDrawFromFile() []string {
-	draw, _ := os.ReadFile("hangman.txt")
+	draw, _ := os.ReadFile("game-progress-classic.txt")
 	strDraw := string(draw)
 	splitDraws := strings.Split(strDraw, "=========")
 	for i := 0; i < len(splitDraws)-1; i++ {

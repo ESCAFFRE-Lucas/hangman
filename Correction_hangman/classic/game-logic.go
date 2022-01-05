@@ -1,4 +1,4 @@
-package hangman
+package classic
 
 import (
 	"bufio"
@@ -12,7 +12,7 @@ func Input() string {
 	fmt.Print("Rentrez une lettre svp : ")
 	for scanner.Scan() {
 		if len(scanner.Text()) > 1 || IsNotALetter(scanner.Text()) {
-			fmt.Println("Bâtard mets qu'une seule lettre je t'ai dit ! Tu sais pas lire ?!")
+			fmt.Println("Mets qu'une seule lettre !!")
 			continue
 		}
 		break
@@ -23,7 +23,6 @@ func Input() string {
 func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string) {
 	//1er partie cherchez si la letter est dans le mot ou non
 	res := strings.Index(word, letter)
-	fmt.Println(res)
 	//2eme partie Si oui, la mettre dans le mot à l'index prévu. Si non, ne rien faire.
 	if res != -1 {
 		arr := []rune(*hiddenWord)
