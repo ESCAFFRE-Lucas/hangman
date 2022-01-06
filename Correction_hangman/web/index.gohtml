@@ -6,17 +6,25 @@
     <link rel="stylesheet" href="public/style.css">
 </head>
 <body>
-    <div class="full-page">
-        <header>
-            <h1>Hangman Web</h1>
-        </header>
-        {{ $value := .Data}}
-        <p>{{$value}} </p>
-        <form method="POST" action="/hangman">
-            <label>Letter <input name="letter" type="text" value=""/> </label>
-            <button type="submit"> Confirm </button>
-        </form>
-    </div>
+<div class="full-page">
+    <header>
+        <h1>Hangman Web</h1>
+    </header>
+    {{$right := .Right}}
+    {{$wrong := .Wrong}}
+    {{$attempts := .Attempts}}
+    {{$target := .TargetWord}}
+    {{$current := .CurrentWord}}
+    <p>{{$right}}</p>
+    <p>{{$wrong}}</p>
+    <p>{{$attempts}}</p>
+    <p>{{$target}}</p>
+    <p>{{$current}}</p>
+    <form method="POST" action="/hangman">
+        <label>Letter <input name="letter" type="text" value=""/> </label>
+        <button type="submit"> Confirm</button>
+    </form>
+</div>
 
 </body>
 </html>

@@ -3,6 +3,7 @@ package main
 import (
 	"classic"
 	"fmt"
+	"hangman_web/structure"
 	"html/template"
 	"net/http"
 )
@@ -13,19 +14,22 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func Hangman(w http.ResponseWriter, r *http.Request) {
+	Target := classic.GetRandomWord()
 	tmpl := template.Must(template.ParseFiles("index.gohtml"))
-	_ = tmpl.Execute(w, struct {
-		Title string
-		Data  string
-	}{Title: "ok", Data: classic.HideLetters(classic.GetRandomWord())},
+	err := tmpl.Execute(w, structure.Stock{
+		Title: "Hangman", Right: []string{}, Wrong: []string{}, Attempts: 10, TargetWord: Target, CurrentWord: classic.InitWord(Target)},
 	)
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
 	}
 	letter := r.FormValue("letter")
-	fmt.Fprintf(w, "Letter = %s\n", letter)
+	fmt.Fprintf(w, "letter :%s\n", letter)
 }
 
 func main() {
