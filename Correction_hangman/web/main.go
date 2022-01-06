@@ -4,13 +4,14 @@ import (
 	"classic"
 	"fmt"
 	"hangman_web/structure"
+	"hangman_web/utils"
 	"html/template"
 	"net/http"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("index.html"))
-	_ = tmpl.Execute(w, nil)
+	tmpl := template.Must(template.ParseFiles("index.gohtml"))
+	_ = tmpl.Execute(w, manager())
 }
 
 func Hangman(w http.ResponseWriter, r *http.Request) {
@@ -32,6 +33,10 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "letter :%s\n", letter)
 }
 
+func manager() structure.Stock {
+	return utils.LoadFile()
+}
+
 func main() {
 
 	server := http.NewServeMux()
@@ -41,6 +46,6 @@ func main() {
 
 	server.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	// listen to the port 8000
-	fmt.Println("server listening on http://localhost:8000/hangman")
+	fmt.Println("server listening on http://localhost:8000/")
 	http.ListenAndServe(":8000", server)
 }
