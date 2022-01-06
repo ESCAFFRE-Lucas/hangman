@@ -15,16 +15,14 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func Hangman(w http.ResponseWriter, r *http.Request) {
-	Target := classic.GetRandomWord()
+	target := classic.GetRandomWord()
 	tmpl := template.Must(template.ParseFiles("index.gohtml"))
 	err := tmpl.Execute(w, structure.Stock{
-		Title: "Hangman", Right: []string{}, Wrong: []string{}, Attempts: 10, TargetWord: Target, CurrentWord: classic.InitWord(Target)},
+		Title: "Hangman", Right: []string{}, Wrong: []string{}, Attempts: 10, TargetWord: target, CurrentWord: classic.InitWord(target)},
 	)
-
 	if err != nil {
 		fmt.Println(err)
 	}
-
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
@@ -34,11 +32,24 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 }
 
 func manager() structure.Stock {
-	return utils.LoadFile()
+	target := classic.GetRandomWord()
+	data := utils.LoadFile()
+	fmt.Println(data)
+	if data.TargetWord == "" {
+		data = structure.Stock{
+			Title:       "Hangman",
+			Right:       []string{},
+			Wrong:       []string{},
+			Attempts:    10,
+			TargetWord:  target,
+			CurrentWord: classic.InitWord(target),
+		}
+		utils.SaveInFile(data)
+	}
+	return data
 }
 
 func main() {
-
 	server := http.NewServeMux()
 	// url http://localhost:8000/
 	server.HandleFunc("/", Home)

@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
 	"hangman_web/structure"
 	"io/ioutil"
 )
@@ -15,7 +14,6 @@ func SaveInFile(data structure.Stock) { //take and return the json encoding of t
 	if err != nil {
 		return
 	}
-	fmt.Println("Game Saved !")
 }
 
 func LoadFile() structure.Stock { //load the file with the saved param
