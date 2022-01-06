@@ -11,10 +11,12 @@ import (
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.gohtml"))
-	_ = tmpl.Execute(w, manager())
+	_ = tmpl.Execute(w, manager(nil))
 }
 
 func Hangman(w http.ResponseWriter, r *http.Request) {
+	letter := r.FormValue("letter")
+	manager(&letter)
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
@@ -22,7 +24,7 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "../", http.StatusSeeOther)
 }
 
-func manager() structure.Stock {
+func manager(input *string) structure.Stock {
 	target := classic.GetRandomWord()
 	data := utils.LoadFile()
 	fmt.Println(data)
@@ -35,6 +37,10 @@ func manager() structure.Stock {
 			TargetWord:  target,
 			CurrentWord: classic.InitWord(target),
 		}
+		utils.SaveInFile(data)
+	}
+	if input != nil {
+		classic.HandleInput(data.TargetWord, *input, &data.CurrentWord, &data.Right, &data.Wrong)
 		utils.SaveInFile(data)
 	}
 	return data
