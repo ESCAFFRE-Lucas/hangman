@@ -39,6 +39,16 @@ func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string
 		if !contains(*wrong, letter) {
 			*wrong = append(*wrong, letter)
 		}
-		*attempts = 10 - len(*wrong)
+		//Attempts(letter, attempts, wrong)
 	}
 }
+
+//func Attempts(letter string, attempts *int, wrong *[]string) {
+//	count := 1
+//	 if len(letter) == 1 {
+//		 *attempts = 10 - len(*wrong)
+//	 } else {
+//		 count += 2
+//		 *attempts -= 2
+//	 }
+//}
