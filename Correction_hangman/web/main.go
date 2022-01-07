@@ -40,14 +40,10 @@ func manager(input *string) structure.Stock {
 		utils.SaveInFile(data)
 	}
 	if input != nil {
-		tempLen := 0
 		classic.HandleInput(data.TargetWord, *input, &data.CurrentWord, &data.Right, &data.Wrong)
-		if len(data.Wrong) > tempLen {
-			tempLen += 1
-			data.Attempts -= 1
-		}
-		utils.SaveInFile(data)
+		data.Attempts = 10 - len(data.Wrong)
 	}
+	utils.SaveInFile(data)
 	return data
 }
 
