@@ -40,7 +40,7 @@ func manager(input *string) structure.Stock {
 		utils.SaveInFile(data)
 	}
 	if input != nil {
-		classic.HandleInput(data.TargetWord, *input, &data.CurrentWord, &data.Right, &data.Wrong, data.Attempts)
+		classic.HandleInput(data.TargetWord, *input, &data.CurrentWord, &data.Right, &data.Wrong, &data.Attempts)
 		utils.SaveInFile(data)
 	}
 	if data.Attempts == 0 || data.CurrentWord == data.TargetWord {

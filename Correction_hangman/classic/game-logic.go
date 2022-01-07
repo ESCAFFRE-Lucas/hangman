@@ -20,7 +20,7 @@ func Input() string {
 	return scanner.Text()
 }
 
-func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string, attempts int) {
+func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string, attempts *int) {
 	//1er partie cherchez si la letter est dans le mot ou non
 	res := strings.Index(word, letter)
 	//2eme partie Si oui, la mettre dans le mot à l'index prévu. Si non, ne rien faire.
@@ -39,6 +39,6 @@ func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string
 		if !contains(*wrong, letter) {
 			*wrong = append(*wrong, letter)
 		}
+		*attempts = 10 - len(*wrong)
 	}
-	attempts = attempts - len(*wrong)
 }
