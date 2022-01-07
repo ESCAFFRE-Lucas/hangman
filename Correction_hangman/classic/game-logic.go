@@ -21,24 +21,35 @@ func Input() string {
 }
 
 func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string, attempts int) {
-	//1er partie cherchez si la letter est dans le mot ou non
-	res := strings.Index(word, letter)
-	//2eme partie Si oui, la mettre dans le mot à l'index prévu. Si non, ne rien faire.
-	if res != -1 {
-		arr := []rune(*hiddenWord)
-		for i := 0; i < len(word); i++ {
-			if word[i] == letter[0] {
-				arr[i] = rune(letter[0])
+	if LowercaseOnly(letter) == true {
+		//1er partie cherchez si la letter est dans le mot ou non
+		res := strings.Index(word, letter)
+		//2eme partie Si oui, la mettre dans le mot à l'index prévu. Si non, ne rien faire.
+		if res != -1 {
+			arr := []rune(*hiddenWord)
+			for i := 0; i < len(word); i++ {
+				if word[i] == letter[0] {
+					arr[i] = rune(letter[0])
+				}
+			}
+			*hiddenWord = string(arr)
+			if !contains(*right, letter) {
+				*right = append(*right, letter)
+			}
+		} else {
+			if !contains(*wrong, letter) {
+				*wrong = append(*wrong, letter)
 			}
 		}
-		*hiddenWord = string(arr)
-		if !contains(*right, letter) {
-			*right = append(*right, letter)
-		}
+		attempts = attempts - len(*wrong)
 	} else {
-		if !contains(*wrong, letter) {
-			*wrong = append(*wrong, letter)
-		}
+		fmt.Println("Please, choose a lowercase letter !")
 	}
-	attempts = attempts - len(*wrong)
+}
+
+func LowercaseOnly(letter string) bool {
+	if letter < "a" || letter > "z" {
+		return false
+	}
+	return true
 }
