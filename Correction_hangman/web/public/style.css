@@ -4,7 +4,28 @@ body {
 
 h1 {
     text-align: center;
-    color: white;
+    color: black;
     padding: 15px;
     margin: 5px;
+}
+
+#right {
+    border: 2px black solid;
+    width: 25%;
+    margin: 5px;
+    text-align: center;
+}
+
+#word {
+    border: 2px black solid;
+    width: 50%;
+    margin: 5px;
+    text-align: center;
+}
+
+#wrong {
+    border: 2px black solid;
+    width: 25%;
+    margin: 5px;
+    text-align: center;
 }

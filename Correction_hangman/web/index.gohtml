@@ -22,16 +22,15 @@
     </div>
     <div id="word">
         {{$attempts := .Attempts}}
-        {{$target := .TargetWord}}
         {{$current := .CurrentWord}}
-        <p>{{$attempts}}</p>
-        <p>{{$target}}</p>
-        <p>{{$current}}</p>
+        <h3>{{$attempts}}</h3>
+        <h1>{{$current}}</h1>
+        <form method="POST" action="/hangman">
+            <label>Choose a letter <input name="letter" type="text" value=""/> </label>
+            <button type="submit"> Confirm</button>
+        </form>
     </div>
-    <form method="POST" action="/hangman">
-        <label>Choose a letter <input name="letter" type="text" value=""/> </label>
-        <button type="submit"> Confirm</button>
-    </form>
+
 </div>
 
 </body>
