@@ -10,16 +10,24 @@
     <header>
         <h1>Hangman Web</h1>
     </header>
-    {{$right := .Right}}
-    {{$wrong := .Wrong}}
-    {{$attempts := .Attempts}}
-    {{$target := .TargetWord}}
-    {{$current := .CurrentWord}}
-    <p>{{$right}}</p>
-    <p>{{$wrong}}</p>
-    <p>{{$attempts}}</p>
-    <p>{{$target}}</p>
-    <p>{{$current}}</p>
+    <div id="right">
+        {{$right := .Right}}
+        <h2>Right Letters :</h2>
+        <h3>{{$right}}</h3>
+    </div>
+    <div id="wrong">
+        {{$wrong := .Wrong}}
+        <h2>Wrong Letters :</h2>
+        <h3>{{$wrong}}</h3>
+    </div>
+    <div id="word">
+        {{$attempts := .Attempts}}
+        {{$target := .TargetWord}}
+        {{$current := .CurrentWord}}
+        <p>{{$attempts}}</p>
+        <p>{{$target}}</p>
+        <p>{{$current}}</p>
+    </div>
     <form method="POST" action="/hangman">
         <label>Choose a letter <input name="letter" type="text" value=""/> </label>
         <button type="submit"> Confirm</button>
