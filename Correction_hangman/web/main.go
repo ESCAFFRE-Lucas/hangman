@@ -24,6 +24,8 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "../", http.StatusSeeOther)
 }
 
+var AttemptLeft = 10
+
 func manager(input *string) structure.Stock {
 	target := classic.GetRandomWord()
 	data := utils.LoadFile()
@@ -41,10 +43,14 @@ func manager(input *string) structure.Stock {
 	}
 	if input != nil {
 		classic.HandleInput(data.TargetWord, *input, &data.CurrentWord, &data.Right, &data.Wrong, data.Attempts)
-		data.Attempts = 10 - len(data.Wrong)
+		if len(*input) > 1 {
+			AttemptLeft -= 1
+		}
+		data.Attempts = AttemptLeft - len(data.Wrong)
 		utils.SaveInFile(data)
 	}
-	if data.Attempts == 0 || data.CurrentWord == data.TargetWord {
+	if data.Attempts <= 0 || data.CurrentWord == data.TargetWord {
+		AttemptLeft = 10
 		utils.SaveInFile(structure.Stock{})
 	}
 	return data
