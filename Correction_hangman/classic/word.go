@@ -27,7 +27,7 @@ func InitWord(word string) string {
 func HideLetters(word string) string {
 	var str string
 	for i := 0; i < len(word); i++ {
-		str += "_"
+		str += "_ "
 	}
 	return str
 }
