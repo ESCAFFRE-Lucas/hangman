@@ -21,7 +21,11 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
 	}
-	http.Redirect(w, r, "../", http.StatusSeeOther)
+	if classic.IsNotALetter(letter) {
+		http.Redirect(w, r, "/errors", http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, "../", http.StatusSeeOther)
+	}
 }
 
 func manager(input *string) structure.Stock {
@@ -50,11 +54,17 @@ func manager(input *string) structure.Stock {
 	return data
 }
 
+func DisplayErrors(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("Errors/errors-page.gohtml"))
+	_ = tmpl.Execute(w, nil)
+}
+
 func main() {
 	server := http.NewServeMux()
 	// url http://localhost:8000/
 	server.HandleFunc("/", Home)
 	server.HandleFunc("/hangman", Hangman)
+	server.HandleFunc("/errors", DisplayErrors)
 
 	server.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	// listen to the port 8000
