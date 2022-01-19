@@ -2,6 +2,23 @@ body {
     background: linear-gradient(to right, #4ca1af, #c4e0e5);
 }
 
+img {
+    width: 100%;
+}
+
+.image {
+    width: 33%;
+}
+
+.full-page {
+    display: flex;
+}
+
+.left-page {
+    display: flex;
+    width: 66%;
+}
+
 h1 {
     text-align: center;
     color: black;
@@ -11,6 +28,22 @@ h1 {
 
 .full-body {
     display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+}
+
+.score {
+    border: 2px black solid;
+    width: 33%;
+}
+
+#victory {
+    text-align: center;
+}
+
+.game {
+    width: 66%;
 }
 
 .letter {
@@ -24,16 +57,15 @@ h1 {
     margin-right: 5px;
     text-align: center;
     float:left;
-    width:25%;
+    width:100%;
 }
 
 #word {
     border: 2px black solid;
-    width: 50%;
     text-align: center;
     align-items: center;
     padding: 15px;
-    margin: 5px;
+    margin-top: 5px;
 }
 
 #word h1 {
@@ -42,6 +74,6 @@ h1 {
 
 #wrong {
     border: 2px black solid;
-    width: 25%;
+    width: 100%;
     text-align: center;
 }

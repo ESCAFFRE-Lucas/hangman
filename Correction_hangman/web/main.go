@@ -11,7 +11,8 @@ import (
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.gohtml"))
-	_ = tmpl.Execute(w, manager(nil))
+	data, _ := manager(nil)
+	_ = tmpl.Execute(w, data)
 }
 
 func Hangman(w http.ResponseWriter, r *http.Request) {
@@ -21,12 +22,16 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
 	}
-	http.Redirect(w, r, "../", http.StatusSeeOther)
+	if classic.IsNotALetter(letter) {
+		http.Redirect(w, r, "/errors", http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, "../", http.StatusSeeOther)
+	}
 }
 
 var AttemptLeft = 10
 
-func manager(input *string) structure.Stock {
+func manager(input *string) (structure.Stock, bool) {
 	target := classic.GetRandomWord()
 	data := utils.LoadFile()
 	fmt.Println(data)
@@ -46,14 +51,39 @@ func manager(input *string) structure.Stock {
 		if len(*input) > 1 {
 			AttemptLeft -= 1
 		}
-		data.Attempts = AttemptLeft - len(data.Wrong)
-		utils.SaveInFile(data)
+		if *input == data.TargetWord {
+			AttemptLeft = 10
+			utils.SaveInFile(structure.Stock{})
+		} else {
+			data.Attempts = AttemptLeft - len(data.Wrong)
+			utils.SaveInFile(data)
+		}
 	}
-	if data.Attempts <= 0 || data.CurrentWord == data.TargetWord {
+	if data.Attempts <= 0 {
 		AttemptLeft = 10
 		utils.SaveInFile(structure.Stock{})
+	} else if data.CurrentWord == data.TargetWord {
+		AttemptLeft = 10
+		utils.SaveInFile(structure.Stock{})
+		return data, true
 	}
-	return data
+	return data, false
+}
+
+func DisplayErrors(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("Errors/errors-page.gohtml"))
+	_ = tmpl.Execute(w, nil)
+}
+
+func StartGame(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("start/startgame.gohtml"))
+	_ = tmpl.Execute(w, nil)
+}
+
+func ScoreBoard(r *http.Request, count int) map[string]int {
+	username := r.FormValue("username")
+	score := map[string]int{username: count}
+	return score
 }
 
 func main() {
@@ -61,10 +91,12 @@ func main() {
 	// url http://localhost:8000/
 	server.HandleFunc("/", Home)
 	server.HandleFunc("/hangman", Hangman)
+	server.HandleFunc("/errors", DisplayErrors)
+	server.HandleFunc("/start", StartGame)
 
 	server.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	// listen to the port 8000
-	fmt.Println("server listening on http://localhost:8000/")
+	fmt.Println("server listening on http://localhost:8000/start")
 
 	http.ListenAndServe(":8000", server)
 }
