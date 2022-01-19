@@ -11,13 +11,14 @@ import (
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.gohtml"))
-	data, _ := manager(nil)
+	data, _ := manager(nil, nil)
 	_ = tmpl.Execute(w, data)
+
 }
 
 func Hangman(w http.ResponseWriter, r *http.Request) {
 	letter := r.FormValue("letter")
-	manager(&letter)
+	manager(&letter, nil)
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
@@ -31,8 +32,9 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 
 var AttemptLeft = 10
 
-func manager(input *string) (structure.Stock, bool) {
-	target := classic.GetRandomWord()
+func manager(input *string, difficulty *string) (structure.Stock, bool) {
+	target := classic.GetRandomWord(difficulty)
+
 	data := utils.LoadFile()
 	fmt.Println(data)
 	if data.TargetWord == "" {
@@ -76,14 +78,33 @@ func DisplayErrors(w http.ResponseWriter, r *http.Request) {
 }
 
 func StartGame(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("start/startgame.gohtml"))
-	_ = tmpl.Execute(w, nil)
+	if r.Method == http.MethodGet {
+		tmpl := template.Must(template.ParseFiles("start/startgame.gohtml"))
+		_ = tmpl.Execute(w, nil)
+	} else {
+		difficulty := r.FormValue("difficulty")
+		fmt.Println(difficulty)
+
+		_, _ = manager(nil, &difficulty)
+		http.Redirect(w, r, "../", http.StatusSeeOther)
+	}
 }
 
-func ScoreBoard(r *http.Request, count int) map[string]int {
+func ScoreBoard(r *http.Request) map[string]int {
 	username := r.FormValue("username")
-	score := map[string]int{username: count}
-	return score
+	fmt.Println(username)
+	data := utils.LoadScoreFile()
+	data = map[string]int{}
+	fmt.Println(data)
+	if username == "" {
+		data = map[string]int{username: 0}
+	} else {
+		data[username] = data[username] + 1
+		fmt.Println(data)
+	}
+	fmt.Println(data)
+	utils.SaveScoreInFile(data)
+	return data
 }
 
 func main() {
