@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="public/startgame.css">
+</head>
+<body>
+<header> Welcome to the game ! </header>
+<form method="POST" action="/start">
+    <label>Choose a username <input name="username" type="text" value=""/> </label>
+    <button type="submit"> Confirm</button>
+</form>
+<a href="http://localhost:8000/">Start the game !</a>
+</body>
