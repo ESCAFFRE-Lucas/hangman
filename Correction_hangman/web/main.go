@@ -34,7 +34,6 @@ var AttemptLeft = 10
 
 func manager(input *string, difficulty *string) (structure.Stock, bool) {
 	target := classic.GetRandomWord(difficulty)
-
 	data := utils.LoadFile()
 	fmt.Println(data)
 	if data.TargetWord == "" {
@@ -93,18 +92,18 @@ func StartGame(w http.ResponseWriter, r *http.Request) {
 func ScoreBoard(r *http.Request) map[string]int {
 	username := r.FormValue("username")
 	fmt.Println(username)
-	data := utils.LoadScoreFile()
-	data = map[string]int{}
-	fmt.Println(data)
+	score := utils.LoadScoreFile()
+	score = map[string]int{}
+	fmt.Println(score)
 	if username == "" {
-		data = map[string]int{username: 0}
+		score = map[string]int{username: 0}
 	} else {
-		data[username] = data[username] + 1
-		fmt.Println(data)
+		score[username] = score[username] + 1
+		fmt.Println(score)
 	}
-	fmt.Println(data)
-	utils.SaveScoreInFile(data)
-	return data
+	fmt.Println(score)
+	utils.SaveScoreInFile(score)
+	return score
 }
 
 func main() {
