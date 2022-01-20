@@ -16,9 +16,17 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 }
 
+var AttemptLeft = 10
+
 func Hangman(w http.ResponseWriter, r *http.Request) {
 	letter := r.FormValue("letter")
-	manager(&letter, nil)
+	_, gameWon := manager(&letter, nil)
+	ok := true
+	if gameWon == &ok {
+		http.Redirect(w, r, "/endwin", http.StatusSeeOther)
+	} else if gameWon != &ok {
+		http.Redirect(w, r, "/endlose", http.StatusSeeOther)
+	}
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
@@ -30,11 +38,15 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-var AttemptLeft = 10
+func Redirect(w http.ResponseWriter, r *http.Request, url string) {
+	http.Redirect(w, r, url, http.StatusSeeOther)
+}
 
-func manager(input *string, difficulty *string) (structure.Stock, bool) {
+func manager(input *string, difficulty *string) (structure.Stock, *bool) {
 	target := classic.GetRandomWord(difficulty)
 	data := utils.LoadFile()
+	vrai := true
+	faux := false
 	fmt.Println(data)
 	if data.TargetWord == "" {
 		data = structure.Stock{
@@ -63,12 +75,13 @@ func manager(input *string, difficulty *string) (structure.Stock, bool) {
 	if data.Attempts <= 0 {
 		AttemptLeft = 10
 		utils.SaveInFile(structure.Stock{})
+		return data, &faux
 	} else if data.CurrentWord == data.TargetWord {
 		AttemptLeft = 10
 		utils.SaveInFile(structure.Stock{})
-		return data, true
+		return data, &vrai
 	}
-	return data, false
+	return data, nil
 }
 
 func DisplayErrors(w http.ResponseWriter, r *http.Request) {
@@ -87,6 +100,16 @@ func StartGame(w http.ResponseWriter, r *http.Request) {
 		_, _ = manager(nil, &difficulty)
 		http.Redirect(w, r, "../", http.StatusSeeOther)
 	}
+}
+
+func EndgameWin(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("finish/endgamewin.gohtml"))
+	_ = tmpl.Execute(w, nil)
+}
+
+func EndgameLose(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("finish/endgamelose.gohtml"))
+	_ = tmpl.Execute(w, nil)
 }
 
 func ScoreBoard(r *http.Request) map[string]int {
@@ -113,6 +136,8 @@ func main() {
 	server.HandleFunc("/hangman", Hangman)
 	server.HandleFunc("/errors", DisplayErrors)
 	server.HandleFunc("/start", StartGame)
+	server.HandleFunc("/endwin", EndgameWin)
+	server.HandleFunc("/endlose", EndgameLose)
 
 	server.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	// listen to the port 8000
