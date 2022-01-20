@@ -45,17 +45,12 @@
         <h1>
             Scoreboard
         </h1>
-        {{$username := .Username}}
+        {{$score:= .score}}
         <ul>
-            <li>
-                {{$username}}
-            </li>
+           <li>
+               {{$score}}
+           </li>
         </ul>
-        <div id="victory">
-            {{$victory := .NumberVictory}}
-            <h2> Number of victory :</h2>
-            <h3>{{$victory}}</h3>
-        </div>
     </div>
 </div>
 

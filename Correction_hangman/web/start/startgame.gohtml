@@ -3,13 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>{{.Title}}</title>
-    <link rel="stylesheet" href="public/startgame.css">
+    <link rel="stylesheet" href="../public/start-style.css">
 </head>
 <body>
 <header> Welcome to the game ! </header>
+
 <form method="POST" action="/start">
     <label>Choose a username <input name="username" type="text" value=""/> </label>
-    <button type="submit"> Confirm</button>
+    <p>Veuillez choisir le mode de difficulté :</p>
+    <div>
+        <input type="radio" id="difficulty1"
+               name="difficulty" value="words.txt">
+        <label for="difficulty1">Easy</label>
+
+        <input type="radio" id="difficulty2"
+               name="difficulty" value="words2.txt">
+        <label for="difficulty2">Medium</label>
+
+        <input type="radio" id="difficulty3"
+               name="difficulty" value="words3.txt">
+        <label for="difficulty3">Hard</label>
+    </div>
+    <div>
+        <button type="submit">Envoyer</button>
+    </div>
 </form>
-<a href="http://localhost:8000/">Start the game !</a>
+<pre id="log">
+</pre>
 </body>
