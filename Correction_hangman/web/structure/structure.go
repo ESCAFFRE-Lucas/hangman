@@ -1,5 +1,6 @@
 package structure
 
+//structure of the game
 type Stock struct {
 	Title       string
 	Right       []string

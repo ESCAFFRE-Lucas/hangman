@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+//The function below is used to get all words in a file and stock them in an array of string
 func GetWordsFromFile(file *string) []string {
 	if file == nil {
 		defaultFile := "words.txt"
@@ -20,6 +21,7 @@ func GetWordsFromFile(file *string) []string {
 	return splitWords
 }
 
+//The function below use the function "GetWordFromFile" and pick a randomword in his array of string (words)
 func GetRandomWord(file *string) string {
 	words := GetWordsFromFile(file)
 	randomWord := words[rand.Intn(len(words))]
@@ -27,10 +29,12 @@ func GetRandomWord(file *string) string {
 	return randomWord
 }
 
+//Use the two functions below  to set a base hidden word with a certain number of letters revealed at the start of a game
 func InitWord(word string) string {
 	return RevealLetters(word, HideLetters(word))
 }
 
+//hide all the letters of a given word
 func HideLetters(word string) string {
 	var str string
 	for i := 0; i < len(word); i++ {
@@ -39,6 +43,7 @@ func HideLetters(word string) string {
 	return str
 }
 
+//take a hidden word and reveal len(word)/2 - 1 letters then return it
 func RevealLetters(word, hidden string) string {
 	var idx int
 	arrHidden := []rune(hidden)

@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+//This function below permit to execute the index template (the main page of the game)
 func Home(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.gohtml"))
 	data, _ := manager(nil, nil)
@@ -18,6 +19,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 var AttemptLeft = 10
 
+//
 func Hangman(w http.ResponseWriter, r *http.Request) {
 	letter := r.FormValue("letter")
 	_, gameWon := manager(&letter, nil)
@@ -31,17 +33,21 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
 	}
-	if classic.IsNotALetter(letter) {
-		http.Redirect(w, r, "/errors", http.StatusSeeOther)
-	} else {
-		http.Redirect(w, r, "../", http.StatusSeeOther)
-	}
+	//if classic.IsNotALetter(letter) {
+	//	http.Redirect(w, r, "/errors", http.StatusSeeOther)
+	//} else {
+	//	http.Redirect(w, r, "../", http.StatusSeeOther)
+	//}
 }
 
+//This function below permit to redirect to another page with an url
 func Redirect(w http.ResponseWriter, r *http.Request, url string) {
 	http.Redirect(w, r, url, http.StatusSeeOther)
 }
 
+//This function below is the most important, it uses the stock structure and some normal hangman functions
+//to play the hangman game on the server, while saving the progress. if hidden word == current word then win,
+//if attempts < 10 then lose (if the len of the input is >= 2, then attempts down by 2)
 func manager(input *string, difficulty *string) (structure.Stock, *bool) {
 	target := classic.GetRandomWord(difficulty)
 	data := utils.LoadFile()
@@ -84,11 +90,13 @@ func manager(input *string, difficulty *string) (structure.Stock, *bool) {
 	return data, nil
 }
 
+//This function below permit to execute the errors template, wich will handle when the player type a non lowercase letter
 func DisplayErrors(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("Errors/errors-page.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
+//This function below execute the start template, wich will ask the username and the difficulty of the player
 func StartGame(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		tmpl := template.Must(template.ParseFiles("start/startgame.gohtml"))
@@ -102,16 +110,19 @@ func StartGame(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//This function below execute the endgamewin template, wich will redirect to a "You Won !" page
 func EndgameWin(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("finish/endgamewin.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
+//This function below execute the endgamelose template, wich will redirect to a "You Lost !" page
 func EndgameLose(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("finish/endgamelose.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
+//The function below show a scoreboard in the main page, with the player's username and his score (+1 per win)
 func ScoreBoard(r *http.Request) map[string]int {
 	username := r.FormValue("username")
 	fmt.Println(username)
@@ -129,6 +140,7 @@ func ScoreBoard(r *http.Request) map[string]int {
 	return score
 }
 
+//This function below start the server and handle some functions to begin to play the game
 func main() {
 	server := http.NewServeMux()
 	// url http://localhost:8000/
@@ -136,8 +148,8 @@ func main() {
 	server.HandleFunc("/hangman", Hangman)
 	server.HandleFunc("/errors", DisplayErrors)
 	server.HandleFunc("/start", StartGame)
-	server.HandleFunc("/endwin", EndgameWin)
-	server.HandleFunc("/endlose", EndgameLose)
+	//server.HandleFunc("/endwin", EndgameWin)
+	//server.HandleFunc("/endlose", EndgameLose)
 
 	server.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	// listen to the port 8000
