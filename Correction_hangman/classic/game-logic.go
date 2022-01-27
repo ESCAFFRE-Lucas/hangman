@@ -20,7 +20,7 @@ func Input() string {
 	return scanner.Text()
 }
 
-//What the function below do : if a lowercase letter is detected, first we search if the letter is in "word", then reveal
+// HandleInput What the function below do : if a lowercase letter is detected, first we search if the letter is in "word", then reveal
 //the same letter in "hiddenword" then put it in "right" if the letter is in "word", else we put it in "wrong" and tell the
 //player to choose a lowercase letter. After that we decrease the number of attempt by the len of "wrong"
 func HandleInput(word, letter string, hiddenWord *string, right, wrong *[]string, attempts int) {
