@@ -89,13 +89,13 @@ func manager(input *string, difficulty *string) (structure.Stock, *bool) {
 	return data, nil
 }
 
-// DisplayErrors This function below permit to execute the errors template, wich will handle when the player type a non lowercase letter
+// DisplayErrors This function below permit to execute the errors template, which will handle when the player type a non lowercase letter
 func DisplayErrors(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("Errors/errors-page.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
-// StartGame This function below execute the start template, wich will ask the username and the difficulty of the player
+// StartGame This function below execute the start template, which will ask the username and the difficulty of the player
 func StartGame(w http.ResponseWriter, r *http.Request) {
 	//username := r.FormValue("username")
 	if r.Method == http.MethodGet {
@@ -109,13 +109,13 @@ func StartGame(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// EndgameWin This function below execute the endgamewin template, wich will redirect to a "You Won !" page
+// EndgameWin This function below execute the endgamewin template, which will redirect to a "You Won !" page
 func EndgameWin(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("finish/endgamewin.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
-// EndgameLose This function below execute the endgamelose template, wich will redirect to a "You Lost !" page
+// EndgameLose This function below execute the endgamelose template, which will redirect to a "You Lost !" page
 func EndgameLose(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("finish/endgamelose.gohtml"))
 	_ = tmpl.Execute(w, nil)
