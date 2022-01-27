@@ -21,13 +21,7 @@ var AttemptLeft = 10
 
 func Hangman(w http.ResponseWriter, r *http.Request) {
 	letter := r.FormValue("letter")
-	_, gameWon := manager(&letter, nil)
-	ok := true
-	if gameWon == &ok {
-		http.Redirect(w, r, "/endwin", http.StatusSeeOther)
-	} else if gameWon != &ok {
-		http.Redirect(w, r, "/endlose", http.StatusSeeOther)
-	}
+	manager(&letter, nil)
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
@@ -47,11 +41,9 @@ func Redirect(w http.ResponseWriter, r *http.Request, url string) {
 //This function below is the most important, it uses the stock structure and some normal hangman functions
 //to play the hangman game on the server, while saving the progress. if hidden word == current word then win,
 //if attempts < 10 then lose (if the len of the input is >= 2, then attempts down by 2)
-func manager(input *string, difficulty *string) (structure.Stock, *bool) {
+func manager(input *string, difficulty *string) (structure.Stock, bool) {
 	target := classic.GetRandomWord(difficulty)
 	data := utils.LoadFile()
-	vrai := true
-	faux := false
 	fmt.Println(data)
 	if data.TargetWord == "" {
 		data = structure.Stock{
@@ -80,13 +72,12 @@ func manager(input *string, difficulty *string) (structure.Stock, *bool) {
 	if data.Attempts <= 0 {
 		AttemptLeft = 10
 		utils.SaveInFile(structure.Stock{})
-		return data, &faux
 	} else if data.CurrentWord == data.TargetWord {
 		AttemptLeft = 10
 		utils.SaveInFile(structure.Stock{})
-		return data, &vrai
+		return data, true
 	}
-	return data, nil
+	return data, false
 }
 
 // DisplayErrors This function below permit to execute the errors template, which will handle when the player type a non lowercase letter
