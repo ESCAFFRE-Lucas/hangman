@@ -1,1 +1,1 @@
-{"Title":"Hangman","Right":[],"Wrong":[],"Attempts":10,"TargetWord":"ecole","CurrentWord":"e____"}
+{"Title":"Hangman","Right":["c"],"Wrong":[],"Attempts":10,"TargetWord":"chaise","CurrentWord":"c____e"}

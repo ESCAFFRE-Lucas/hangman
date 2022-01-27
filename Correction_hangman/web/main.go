@@ -32,11 +32,11 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ParseForm() err : %v", err)
 		return
 	}
-	//if classic.IsNotALetter(letter) {
-	//	http.Redirect(w, r, "/errors", http.StatusSeeOther)
-	//} else {
-	//	http.Redirect(w, r, "../", http.StatusSeeOther)
-	//}
+	if classic.IsNotALetter(letter) {
+		http.Redirect(w, r, "/errors", http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, "../", http.StatusSeeOther)
+	}
 }
 
 // Redirect This function below permit to redirect to another page with an url
