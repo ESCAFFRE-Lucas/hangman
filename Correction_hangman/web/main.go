@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-//This function below permit to execute the index template (the main page of the game)
+// Home This function below permit to execute the index template (the main page of the game)
 func Home(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.gohtml"))
 	data, _ := manager(nil, nil)
@@ -19,7 +19,6 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 var AttemptLeft = 10
 
-//
 func Hangman(w http.ResponseWriter, r *http.Request) {
 	letter := r.FormValue("letter")
 	_, gameWon := manager(&letter, nil)
@@ -40,7 +39,7 @@ func Hangman(w http.ResponseWriter, r *http.Request) {
 	//}
 }
 
-//This function below permit to redirect to another page with an url
+// Redirect This function below permit to redirect to another page with an url
 func Redirect(w http.ResponseWriter, r *http.Request, url string) {
 	http.Redirect(w, r, url, http.StatusSeeOther)
 }
@@ -90,55 +89,54 @@ func manager(input *string, difficulty *string) (structure.Stock, *bool) {
 	return data, nil
 }
 
-//This function below permit to execute the errors template, wich will handle when the player type a non lowercase letter
+// DisplayErrors This function below permit to execute the errors template, wich will handle when the player type a non lowercase letter
 func DisplayErrors(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("Errors/errors-page.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
-//This function below execute the start template, wich will ask the username and the difficulty of the player
+// StartGame This function below execute the start template, wich will ask the username and the difficulty of the player
 func StartGame(w http.ResponseWriter, r *http.Request) {
+	//username := r.FormValue("username")
 	if r.Method == http.MethodGet {
 		tmpl := template.Must(template.ParseFiles("start/startgame.gohtml"))
 		_ = tmpl.Execute(w, nil)
 	} else {
 		difficulty := r.FormValue("difficulty")
 		fmt.Println(difficulty)
-
 		_, _ = manager(nil, &difficulty)
 		http.Redirect(w, r, "../", http.StatusSeeOther)
 	}
 }
 
-//This function below execute the endgamewin template, wich will redirect to a "You Won !" page
+// EndgameWin This function below execute the endgamewin template, wich will redirect to a "You Won !" page
 func EndgameWin(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("finish/endgamewin.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
-//This function below execute the endgamelose template, wich will redirect to a "You Lost !" page
+// EndgameLose This function below execute the endgamelose template, wich will redirect to a "You Lost !" page
 func EndgameLose(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("finish/endgamelose.gohtml"))
 	_ = tmpl.Execute(w, nil)
 }
 
 //The function below show a scoreboard in the main page, with the player's username and his score (+1 per win)
-func ScoreBoard(r *http.Request) map[string]int {
-	username := r.FormValue("username")
-	fmt.Println(username)
-	score := utils.LoadScoreFile()
-	score = map[string]int{}
-	fmt.Println(score)
-	if username == "" {
-		score = map[string]int{username: 0}
-	} else {
-		score[username] = score[username] + 1
-		fmt.Println(score)
-	}
-	fmt.Println(score)
-	utils.SaveScoreInFile(score)
-	return score
-}
+//func ScoreBoard(user *string) map[string]int {
+//	fmt.Println(*username)
+//	score := utils.LoadScoreFile()
+//	score = map[string]int{}
+//	fmt.Println(score)
+//	if *username == "" {
+//		score = map[string]int{*username: 0}
+//	} else {
+//		score[*username] = score[*username] + 1
+//		fmt.Println(score)
+//	}
+//	fmt.Println(score)
+//	utils.SaveScoreInFile(score)
+//	return score
+//}
 
 //This function below start the server and handle some functions to begin to play the game
 func main() {
@@ -155,5 +153,6 @@ func main() {
 	// listen to the port 8000
 	fmt.Println("server listening on http://localhost:8000/start")
 
-	http.ListenAndServe(":8000", server)
+	_ = http.ListenAndServe(":8000", server)
+
 }
