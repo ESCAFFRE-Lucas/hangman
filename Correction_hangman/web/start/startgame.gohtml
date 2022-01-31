@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- When the player start the game, this template will redirect him on a page where he can put his username and choose
+ the difficulty; "easy", "medium" or "hard" wich will choose a random word in a set of word matching the difficulty //-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="../public/start-style.css">
+</head>
+<body>
+<header> Welcome to the game ! </header>
+
+<form method="POST" action="/start">
+    <label>Choose a username <input name="username" type="text" value="" autocomplete="off"/> </label>
+    <p>Veuillez choisir le mode de difficulté :</p>
+    <div>
+        <input type="radio" id="difficulty1"
+               name="difficulty" value="words.txt">
+        <label for="difficulty1">Easy</label>
+
+        <input type="radio" id="difficulty2"
+               name="difficulty" value="words2.txt">
+        <label for="difficulty2">Medium</label>
+
+        <input type="radio" id="difficulty3"
+               name="difficulty" value="words3.txt">
+        <label for="difficulty3">Hard</label>
+    </div>
+    <div>
+        <button type="submit">Envoyer</button>
+    </div>
+</form>
+<pre id="log">
+</pre>
+</body>
